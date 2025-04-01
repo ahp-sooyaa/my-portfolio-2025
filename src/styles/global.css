@@ -1,10 +1,19 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-    --color-title-light: #101828;
-    --color-normal-light: #314158;
-    --color-muted-light: #62748E;
-    --color-subtle-gray-light: #F6F6F6;
+    --color-title-light: #101828; 
+    --color-normal-light: #314158; 
+    --color-muted-light: #62748E; 
+    --color-subtle-gray-light: #F6F6F6; 
+
+    --color-title-dark: #FFFFFF; /* text-white */
+    --color-normal-dark: #E2E8F0; /* text-slate-200 */
+    --color-muted-dark: #90A1B9; /* text-slate-400 */
+    --color-subtle-gray-dark: #1D283D; /* bg-slate-800 */
+
+    --color-dark: #050818; /* main bg of the page in dark mode */
 }
 
 @layer base {
@@ -25,7 +34,7 @@
     }
 
     body {
-        @apply text-normal-light font-['Inter'];
+        @apply text-normal-light font-['Inter'] dark:bg-dark dark:text-gray-300;
     }
 }
 
@@ -34,16 +43,16 @@
         @apply max-w-3xl mx-auto px-4
     }
     .pill-tag {
-        @apply bg-subtle-gray-light rounded-[10px] px-3.5 py-[3px] text-sm text-muted-light
+        @apply bg-subtle-gray-light dark:bg-subtle-gray-dark rounded-[10px] px-3.5 py-[3px] text-sm text-muted-light dark:text-muted-dark
     }
 
     .section-title {
-        @apply text-xl md:text-2xl font-semibold text-title-light mb-8 relative;
+        @apply text-xl md:text-2xl font-semibold text-title-light dark:text-title-dark/90 mb-8 relative;
     }
     .section-title span:first-child {
         @apply relative z-10;
     }
     .section-title-bg {
-        @apply absolute bottom-1 md:bottom-0 left-1.5 text-4xl md:text-6xl z-0 text-subtle-gray-light;
+        @apply absolute bottom-1 md:bottom-0 left-1.5 text-4xl md:text-6xl z-0 text-subtle-gray-light dark:text-subtle-gray-dark;
     }
 }
