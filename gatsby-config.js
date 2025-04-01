@@ -1,10 +1,14 @@
+require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}`,
+})
+
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
 module.exports = {
   siteMetadata: {
-    title: `My Portfolio 2025`,
-    siteUrl: `https://www.yourdomain.tld`
+    title: `AungHtetPaing Portfolio 2025`,
+    siteUrl: `https://aunghtetpaing.netlify.app`
   },
   plugins: [{
     resolve: 'gatsby-source-sanity',
