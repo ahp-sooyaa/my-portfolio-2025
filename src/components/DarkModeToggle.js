@@ -2,29 +2,18 @@ import React, { useState, useEffect } from "react";
 
 const DarkModeToggle = () => {
     const isBrowser = typeof window !== "undefined";
-
-    const getInitialMode = () => {
-        if (!isBrowser) return false;
-        const savedMode = localStorage.getItem("darkMode");
-        if (savedMode !== null) return savedMode === "true";
-        return window.matchMedia("(prefers-color-scheme: dark)").matches;
-    };
-
-    const [darkMode, setDarkMode] = useState(getInitialMode);
+    const [darkMode, setDarkMode] = useState(false);
     const [isUserToggled, setIsUserToggled] = useState(false);
 
     useEffect(() => {
         if (!isBrowser) return;
 
-        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         const savedMode = localStorage.getItem("darkMode");
+        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const initialMode = savedMode !== null ? savedMode === "true" : systemPrefersDark;
 
-        if (savedMode === null) {
-            setDarkMode(systemPrefersDark);
-            document.documentElement.classList.toggle("dark", systemPrefersDark);
-        } else {
-            document.documentElement.classList.toggle("dark", savedMode === "true");
-        }
+        setDarkMode(initialMode);
+        document.documentElement.classList.toggle("dark", initialMode);
     }, []);
 
     const toggleDarkMode = () => {
@@ -36,11 +25,7 @@ const DarkModeToggle = () => {
         if (!isBrowser || !isUserToggled) return;
 
         localStorage.setItem("darkMode", darkMode);
-        if (darkMode) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
+        document.documentElement.classList.toggle("dark", darkMode);
     }, [darkMode]);
 
     return (
