@@ -20,8 +20,11 @@ const IndexPage = () => {
             </nav>
             <section className="mt-20 md:mt-48 mb-36">
                 <div className="section-container">
-                    <h1 className="dark:text-title-dark/90 text-3xl font-bold text-title-light leading-none">
-                        <span className="flex items-center">Hi, I'm AungHtetPaing <img src={profile} alt="profile image" className="w-9 h-12 md:w-12 md:h-15 rounded-2xl object-cover ml-3"/></span>
+                    <h1 className="flex items-center sm:items-end dark:text-title-dark/90 text-3xl font-bold text-title-light leading-none">
+                        <span className="w-min sm:w-auto">
+                            Hi, I'm AungHtetPaing 
+                        </span>
+                        <img src={profile} alt="profile image" className="w-10 h-13 md:w-12 md:h-15 rounded-2xl object-cover ml-5 md:ml-3"/>
                     </h1>
                     <div className="dark:text-muted-dark text-base font-normal text-muted-light mb-6">
                         A web developer at <a href="https://www.clickrmedia.com" target="_blank" rel="noopener noreferrer" className="hover:underline dark:hover:text-normal-dark hover:text-normal-light">Clickr</a>

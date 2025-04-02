@@ -53,7 +53,7 @@
         @apply relative z-10;
     }
     .section-title-bg {
-        @apply absolute bottom-1 md:bottom-0 left-1.5 text-5xl md:text-6xl z-0 text-subtle-gray-light dark:text-subtle-gray-dark;
+        @apply absolute bottom-2 md:bottom-0 left-1.5 text-4xl md:text-6xl z-0 text-subtle-gray-light dark:text-subtle-gray-dark;
     }
 
     .job-tab {

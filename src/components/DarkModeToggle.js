@@ -30,7 +30,7 @@ const DarkModeToggle = () => {
 
     return (
         <div className="ml-auto flex items-center dark:text-muted-dark text-muted-light text-sm">
-            dark mode
+            Dark mode
             <button
                 onClick={toggleDarkMode}
                 className="dark:shadow-none dark:bg-subtle-gray-dark shadow-[0_0_5px_0px_rgba(0,0,0,0.25)] rounded-xl ml-2 w-14 h-6 flex items-center justify-center dark:text-title-dark text-title-light cursor-pointer"
