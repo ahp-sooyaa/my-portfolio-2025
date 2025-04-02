@@ -36,7 +36,7 @@ const DarkModeToggle = () => {
                 className="dark:shadow-none dark:bg-subtle-gray-dark shadow-[0_0_5px_0px_rgba(0,0,0,0.25)] rounded-xl ml-2 w-14 h-6 flex items-center justify-center dark:text-title-dark text-title-light cursor-pointer"
             >
                 {darkMode ? 'on' : 'off'}
-                <span className={`w-2 h-2 rounded-full ml-1.5 ${darkMode ? "bg-green-500" : "bg-red-500"}`}></span>
+                <span className={`animate-pulse w-2 h-2 rounded-full ml-1.5 ${darkMode ? "bg-green-500" : "bg-red-500"}`}></span>
             </button>
         </div>
     );
