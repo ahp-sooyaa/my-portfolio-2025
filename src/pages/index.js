@@ -239,7 +239,7 @@ export const Head = () => (
         {/* Open Graph (Facebook, LinkedIn) */}
         <meta property="og:title" content="AungHtetPaing Portfolio" />
         <meta property="og:description" content="Web developer specializing in WordPress, Drupal, and Laravel." />
-        <meta property="og:image" content="https://aunghtetpaing.netlify.app/social-preview.jpg" />
+        <meta property="og:image" content="https://aunghtetpaing.netlify.app/social-preview.png" />
         <meta property="og:url" content="https://aunghtetpaing.netlify.app" />
         <meta property="og:type" content="website" />
         
@@ -247,7 +247,7 @@ export const Head = () => (
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="AungHtetPaing Portfolio" />
         <meta name="twitter:description" content="Web developer specializing in WordPress, Drupal, and Laravel." />
-        <meta name="twitter:image" content="https://aunghtetpaing.netlify.app/social-preview.jpg" />
+        <meta name="twitter:image" content="https://aunghtetpaing.netlify.app/social-preview.png" />
         <meta name="twitter:url" content="https://aunghtetpaing.netlify.app" />
     </>
 )
