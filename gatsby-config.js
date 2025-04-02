@@ -27,7 +27,7 @@ module.exports = {
   }, "gatsby-plugin-sitemap", {
     resolve: 'gatsby-plugin-manifest',
     options: {
-      "icon": "src/images/icon.png"
+      "icon": "src/images/favicon-32x32.png"
     }
   }, "gatsby-plugin-mdx", "gatsby-transformer-remark", {
     resolve: 'gatsby-source-filesystem',

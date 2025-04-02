@@ -1,5 +1,4 @@
 import React, {useState} from "react"
-import projectThumbnail from "../images/Rectangle 25.png"
 import DarkModeToggle from "../components/DarkModeToggle"
 import signature from "../images/signature.svg"
 import signatureDark from "../images/signature-dark.svg"
@@ -232,4 +231,23 @@ const IndexPage = () => {
 
 export default IndexPage
 
-export const Head = () => <title>AungHtetPaing</title>
+export const Head = () => (
+    <>
+        <title>AungHtetPaing</title>
+        <meta name="description" content="AungHtetPaing Portfolio" />
+
+        {/* Open Graph (Facebook, LinkedIn) */}
+        <meta property="og:title" content="AungHtetPaing Portfolio" />
+        <meta property="og:description" content="Web developer specializing in WordPress, Drupal, and Laravel." />
+        <meta property="og:image" content="https://aunghtetpaing.netlify.app/social-preview.jpg" />
+        <meta property="og:url" content="https://aunghtetpaing.netlify.app" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AungHtetPaing Portfolio" />
+        <meta name="twitter:description" content="Web developer specializing in WordPress, Drupal, and Laravel." />
+        <meta name="twitter:image" content="https://aunghtetpaing.netlify.app/social-preview.jpg" />
+        <meta name="twitter:url" content="https://aunghtetpaing.netlify.app" />
+    </>
+)
