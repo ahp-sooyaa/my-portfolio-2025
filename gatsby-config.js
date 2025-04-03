@@ -16,6 +16,8 @@ module.exports = {
       "projectId": process.env.SANITY_PROJECT_ID,
       "dataset": process.env.SANITY_DATASET,
       "token": process.env.SANITY_TOKEN,
+      "watchMode": true,
+      "overlayDrafts": true
     }
   }, "gatsby-plugin-image", "gatsby-plugin-sharp", "gatsby-transformer-sharp", "gatsby-plugin-postcss", {
     resolve: 'gatsby-plugin-google-gtag',

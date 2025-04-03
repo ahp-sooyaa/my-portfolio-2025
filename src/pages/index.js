@@ -1,16 +1,19 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
+import { graphql } from "gatsby"
 import DarkModeToggle from "../components/DarkModeToggle"
 import signature from "../images/signature.png"
 import signatureDark from "../images/signature-dark.png"
 import profile from "../images/profile.jpg"
-import koobThumbnail from "../images/koob-thumbnail.webp"
-import rockPaperScissorThumbnail from "../images/rock-paper-scissors-thumbnail.webp"
-import chatAppThumbnail from "../images/chat-app-thumbnail.webp"
-import spaceTourismThumbnail from "../images/space-tourism-thumbnail.webp"
-import toDoAppThumbnail from "../images/todo-app-thumbnail.webp"
 
-const IndexPage = () => {
-    const [activeJob, setActiveJob] = useState("clickr-webdeveloper")
+const IndexPage = ({ data }) => {
+    const [activeJob, setActiveJob] = useState(data.allSanityWorks.nodes[0].positions[0]._key)
+    const homepage = data.allSanityHomePage.nodes[0]
+    const projects = data.allSanityProject.nodes
+    const experiences = data.allSanityWorks.nodes
+    const allPositions = experiences?.reduce((acc, work) => {
+        return [...acc, ...work.positions];
+    }, []);
+      
 
     return (
         <>
@@ -21,15 +24,15 @@ const IndexPage = () => {
                 <div className="section-container">
                     <h1 className="flex items-center sm:items-end dark:text-title-dark/90 text-3xl font-bold text-title-light leading-none">
                         <span className="w-min sm:w-auto">
-                            Hi, I'm AungHtetPaing 
+                            {homepage.mainHeroText}
                         </span>
-                        <img src={profile} alt="profile" className="w-10 h-13 md:w-12 md:h-15 rounded-2xl object-cover ml-5 md:ml-3"/>
+                        <img src={profile} alt="profile" className="w-10 h-13 md:w-12 md:h-15 rounded-2xl object-cover ml-5 md:ml-3" />
                     </h1>
                     <div className="dark:text-muted-dark text-base font-normal text-muted-light mb-6">
-                        A web developer at <a href="https://www.clickrmedia.com" target="_blank" rel="noopener noreferrer" className="hover:underline dark:hover:text-normal-dark hover:text-normal-light">Clickr</a>
+                        A {homepage.currentJobPosition} at <a href={homepage.currentJobCompanyLink} target="_blank" rel="noopener noreferrer" className="hover:underline dark:hover:text-normal-dark hover:text-normal-light">{homepage.currentJobCompany}</a>
                     </div>
                     <p className="dark:text-normal-dark text-base text-normal-light mb-6 leading-7">
-                        I'm a web developer with over three years of experience, primarily working with WordPress and Drupal at Clickr. Previously, I spent a year and a half developing with Laravel and Livewire, and I also explore Vue in personal projects. I specialize in building websites and designing EDMs with Stripo and Mailchimp. Beyond work, I enjoy learning from Laracasts and engaging in community forums. Passionate about growth, I'm eager to expand my skills in the MERN stack and advance as a full-stack developer.
+                        {homepage.aboutMeSummary[0].children[0].text}
                     </p>
                     <div className="flex items-center space-x-[23px]">
                         <a href="https://github.com/ahp-sooyaa" target="_blank" rel="noopener noreferrer" aria-label="github icon">
@@ -64,59 +67,38 @@ const IndexPage = () => {
                     <div className="flex justify-between gap-14">
                         <div className="shrink-0 flex-1 md:flex-none">
                             <div className="static md:sticky md:top-0 space-y-[20px]">
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-4">
-                                        <a href="https://www.clickrmedia.com" target="_blank" rel="noopener noreferrer" className="hover:underline dark:hover:text-normal-dark hover:text-normal-light">Clickr</a>
-                                    </h3>
-                                    <div className="border-l pl-2.5 space-y-[12px]">
-                                        <div>
-                                            <button onClick={() => setActiveJob("clickr-webdeveloper")} className={`${activeJob === 'clickr-webdeveloper' && 'dark:shadow-none dark:bg-slate-800 shadow-md'} job-tab`}>
-                                                <h4 className="text-base dark:text-normal-dark text-normal-light font-medium">Web Developer</h4>
-                                                <p className="text-sm font-normal dark:text-muted-dark text-muted-light">Jan 2024 - Present</p>
-                                            </button>
-                                            <div className={`${activeJob === 'clickr-webdeveloper' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'} job-tab-content`}>
-                                                I maintain and develop websites using Sitefinity, WordPress, and SharePoint while also building and optimizing EDMs with Stripo to ensure high-quality email campaigns.
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button onClick={() => setActiveJob("clickr-juniorwebdeveloper")} className={`${activeJob === 'clickr-juniorwebdeveloper' && 'dark:shadow-none dark:bg-slate-800 shadow-md'} job-tab`}>
-                                                <h4 className="text-base dark:text-normal-dark text-normal-light font-medium">Junior Web Developer</h4>
-                                                <p className="text-sm font-normal dark:text-muted-dark text-muted-light">May 2023 - Jan 2024</p>
-                                            </button>
-                                            <div className={`${activeJob === 'clickr-juniorwebdeveloper' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'} job-tab-content`}>
-                                                I primarily focused on front-end development, translating designs into clean, responsive HTML and resolving UI/UX issues. I managed and updated content on Sitefinity and Drupal websites, ensuring quality control while handling website maintenance, bug fixes, and performance improvements.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-4">
-                                        <a href="https://myintthukhanadi.com" target="_blank" rel="noopener noreferrer" className="hover:underline dark:hover:text-normal-dark hover:text-normal-light">Myint Thu Kha Nadi Co., Ltd</a>
-                                    </h3>
-                                    <div className="border-l pl-2.5">
-                                        <div>
-                                            <button onClick={() => setActiveJob("myintthukhanadi-juniorwebdeveloper")} className={`${activeJob === 'myintthukhanadi-juniorwebdeveloper' && 'dark:shadow-none dark:bg-slate-800 shadow-md'} job-tab`}>
-                                                <h4 className="text-base dark:text-normal-dark text-normal-light font-medium">Junior Web Developer</h4>
-                                                <p className="text-sm font-normal dark:text-muted-dark text-muted-light">Jan 2022 - May 2023</p>
-                                            </button>
-                                            <div className={`${activeJob === 'myintthukhanadi-juniorwebdeveloper' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} job-tab-content`}>
-                                                At Myint Thu Kha Nadi Co., Ltd, I developed custom e-commerce websites using Laravel, Jetstream, Livewire, TailwindCSS, and AlpineJS, delivering scalable and feature-rich solutions tailored to client needs. I built core functionalities such as user authentication, product catalogs, shopping carts, and order management systems, ensuring a seamless shopping experience. To improve responsiveness and interactivity, I leveraged Livewire and AlpineJS for real-time updates without requiring complex JavaScript frameworks. Additionally, I created a custom WordPress theme integrated with TailwindCSS, providing a modern, responsive design. Beyond development, I collaborated closely with clients to understand their requirements, offer technical guidance, and align project outcomes with business goals.
-                                            </div>
+                                {experiences.map((experience, index) => (
+                                    <div key={index}>
+                                        <h3 className="text-xl font-semibold mb-4">
+                                            <a href="https://www.clickrmedia.com" target="_blank" rel="noopener noreferrer" className="hover:underline dark:hover:text-normal-dark hover:text-normal-light">{experience.companyName}</a>
+                                        </h3>
+                                        <div className="border-l pl-2.5 space-y-[12px]">
+                                            {experience.positions.map((position, index) => (
+                                                <div key={index}>
+                                                    <button onClick={() => setActiveJob(position._key)} className={`${activeJob === position._key && 'dark:shadow-none dark:bg-slate-800 shadow-md'} job-tab`}>
+                                                        <h4 className="text-base dark:text-normal-dark text-normal-light font-medium">
+                                                            {position.title}
+                                                        </h4>
+                                                        <p className="text-sm font-normal dark:text-muted-dark text-muted-light">
+                                                            {position.startDate} - {position.isCurrentPosition ? 'present' : position.endDate}
+                                                        </p>
+                                                    </button>
+                                                    <div className={`${activeJob === position._key ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'} job-tab-content`}>
+                                                        {position.responsibilities[0].children[0].text}
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                         <div className="hidden md:block relative flex-1">
-                            <div className={`${activeJob === 'clickr-webdeveloper' ? 'opacity-100 relative' : 'opacity-0 absolute'} text-base font-normal dark:text-normal-dark text-normal-light leading-7 transition-opacity duration-700 ease-in-out top-0`}>
-                                I maintain and develop websites using Sitefinity, WordPress, and SharePoint while also building and optimizing EDMs with Stripo to ensure high-quality email campaigns.
-                            </div>
-                            <div className={`${activeJob === 'clickr-juniorwebdeveloper' ? 'opacity-100 relative' : 'opacity-0 absolute'} text-base font-normal dark:text-normal-dark text-normal-light leading-7 transition-opacity duration-700 ease-in-out top-0`}>
-                                I primarily focused on front-end development, translating designs into clean, responsive HTML and resolving UI/UX issues. I managed and updated content on Sitefinity and Drupal websites, ensuring quality control while handling website maintenance, bug fixes, and performance improvements.
-                            </div>
-                            <div className={`${activeJob === 'myintthukhanadi-juniorwebdeveloper' ? 'opacity-100 relative' : 'opacity-0 absolute'} text-base font-normal dark:text-normal-dark text-normal-light leading-7 transition-opacity duration-700 ease-in-out top-0`}>
-                                At Myint Thu Kha Nadi Co., Ltd, I developed custom e-commerce websites using Laravel, Jetstream, Livewire, TailwindCSS, and AlpineJS, delivering scalable and feature-rich solutions tailored to client needs. I built core functionalities such as user authentication, product catalogs, shopping carts, and order management systems, ensuring a seamless shopping experience. To improve responsiveness and interactivity, I leveraged Livewire and AlpineJS for real-time updates without requiring complex JavaScript frameworks. Additionally, I created a custom WordPress theme integrated with TailwindCSS, providing a modern, responsive design. Beyond development, I collaborated closely with clients to understand their requirements, offer technical guidance, and align project outcomes with business goals.
-                            </div>
+                            {allPositions.map((position) => (
+                                <div className={`${activeJob === position._key ? 'opacity-100 relative' : 'opacity-0 absolute'} text-base font-normal dark:text-normal-dark text-normal-light leading-7 transition-opacity duration-700 ease-in-out top-0`}>
+                                    {position.responsibilities[0].children[0].text}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -129,68 +111,26 @@ const IndexPage = () => {
                         <span className="section-title-bg">Personal Projects</span>
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-7 gap-y-10">
-                        <div>
-                            <img src={koobThumbnail} alt="project thumbnail" className="shadow-lg rounded-md mb-5 w-full h-[210px] object-cover" />
-                            <h3 className="text-xl dark:text-title-dark/90 text-title-light font-semibold mb-2.5">Koob</h3>
-                            <p className="text-base dark:text-normal-dark text-normal-light font-normal mb-2.5">
-                                A ecommerce book store project built with laravel8, vue3, inertia & integrated with stripe.
-                            </p>
-                            <div className="mb-2.5 flex flex-wrap gap-2.5">
-                                <span className="pill-tag">Laravel</span>
-                                <span className="pill-tag">Vue</span>
-                                <span className="pill-tag">Inertia</span>
-                                <span className="pill-tag">Stripe</span>
+                        {projects.map((project) => (
+                            <div key={project.slug.current}>
+                                <img src={project.image.asset.url} alt="project thumbnail" className="shadow-lg rounded-md mb-5 w-full h-[210px] object-cover" />
+                                <h3 className="text-xl dark:text-title-dark/90 text-title-light font-semibold mb-2.5">{project.title}</h3>
+                                <p className="text-base dark:text-normal-dark text-normal-light font-normal mb-2.5">
+                                    {project.description}
+                                </p>
+                                <div className="mb-2.5 flex flex-wrap gap-2.5">
+                                    {project.technologies.map((technology, index) => (
+                                        <span key={index} className="pill-tag">{technology}</span>
+                                    ))}
+                                </div>
+                                {
+                                    project.url && 
+                                    <a href={project.url} className="dark:text-normal-dark text-normal-light text-sm">
+                                        {project.url}
+                                    </a>
+                                }
                             </div>
-                        </div>
-                        <div>
-                            <img src={chatAppThumbnail} alt="project thumbnail" className="shadow-lg rounded-md mb-5 w-full h-[210px] object-cover" />
-                            <h3 className="text-xl dark:text-title-dark/90 text-title-light font-semibold mb-2.5">Chat</h3>
-                            <p className="text-base dark:text-normal-dark text-normal-light font-normal mb-2.5">Real time chat app project with Pusher</p>
-                            <div className="mb-2.5 flex flex-wrap gap-2.5">
-                                <span className="pill-tag">Laravel</span>
-                                <span className="pill-tag">Vue</span>
-                                <span className="pill-tag">Pusher</span>
-                            </div>
-                        </div>
-                        <div>
-                            <img src={rockPaperScissorThumbnail} alt="project thumbnail" className="shadow-lg rounded-md mb-5 w-full h-[210px] object-cover" />
-                            <h3 className="text-xl dark:text-title-dark/90 text-title-light font-semibold mb-2.5">Rock Paper Scissors game</h3>
-                            <p className="text-base dark:text-normal-dark text-normal-light font-normal mb-2.5">Frontend mentor challenge project</p>
-                            <div className="mb-2.5 flex flex-wrap gap-2.5">
-                                <span className="pill-tag">HTML</span>
-                                <span className="pill-tag">Tailwind CSS</span>
-                                <span className="pill-tag">Alpine JS</span>
-                            </div>
-                            <a href="https://ahp-sooyaa.github.io/rock-paper-scissors-game/" className="dark:text-normal-dark text-normal-light text-sm">
-                                https://ahp-sooyaa.github.io/rock-paper-scissors-game/
-                            </a>
-                        </div>
-                        <div>
-                            <img src={spaceTourismThumbnail} alt="project thumbnail" className="shadow-lg rounded-md mb-5 w-full h-[210px] object-cover" />
-                            <h3 className="text-xl dark:text-title-dark/90 text-title-light font-semibold mb-2.5">Space tourism website</h3>
-                            <p className="text-base dark:text-normal-dark text-normal-light font-normal mb-2.5">Frontend mentor challenge project</p>
-                            <div className="mb-2.5 flex flex-wrap gap-2.5">
-                                <span className="pill-tag">HTML</span>
-                                <span className="pill-tag">Tailwind CSS</span>
-                                <span className="pill-tag">JavaScript</span>
-                            </div>
-                            <a href="https://ahp-sooyaa.github.io/space-tourism-website/" className="dark:text-normal-dark text-normal-light text-sm">
-                                https://ahp-sooyaa.github.io/space-tourism-website/
-                            </a>
-                        </div>
-                        <div>
-                            <img src={toDoAppThumbnail} alt="project thumbnail" className="shadow-lg rounded-md mb-5 w-full h-[210px] object-cover" />
-                            <h3 className="text-xl dark:text-title-dark/90 text-title-light font-semibold mb-2.5">Todo App</h3>
-                            <p className="text-base dark:text-normal-dark text-normal-light font-normal mb-2.5">Frontend mentor challenge project</p>
-                            <div className="mb-2.5 flex flex-wrap gap-2.5">
-                                <span className="pill-tag">HTML</span>
-                                <span className="pill-tag">Tailwind CSS</span>
-                                <span className="pill-tag">Alpine JS</span>
-                            </div>
-                            <a href="https://ahp-sooyaa.github.io/todo-app/" className="dark:text-normal-dark text-normal-light text-sm">
-                                https://ahp-sooyaa.github.io/todo-app/
-                            </a>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -229,6 +169,77 @@ const IndexPage = () => {
     )
 }
 
+export const query = graphql`
+    query {
+        allSanityHomePage {
+            nodes {
+                profilePicture {
+                    asset {
+                        url
+                    }
+                }
+                mainHeroText
+                currentJobCompany
+                currentJobPosition
+                currentJobCompanyLink
+                socialLinks {
+                    icon {
+                        asset {
+                            url
+                        }
+                    }
+                    url
+                }
+                gmail
+                aboutMeSummary {
+                    children {
+                        text
+                    }
+                }
+                techStacks
+            }
+        }
+        allSanityWorks {
+            nodes {
+                companyName
+                slug {
+                    current
+                }
+                companyWebsite
+                location
+                positions {
+                    _key
+                    title
+                    startDate
+                    isCurrentPosition
+                    endDate
+                    responsibilities {
+                        children {
+                            text
+                        }
+                    }
+                }
+            }
+        }
+        allSanityProject {
+            nodes {
+                title
+                slug {
+                    current
+                }
+                description
+                image {
+                    asset {
+                        url
+                    }
+                }
+                technologies
+                url
+            }
+        }
+    }
+`
+
 export default IndexPage
 
 export const Head = () => (
@@ -242,7 +253,7 @@ export const Head = () => (
         <meta property="og:image" content="https://aunghtetpaing.netlify.app/social-preview.png" />
         <meta property="og:url" content="https://aunghtetpaing.netlify.app" />
         <meta property="og:type" content="website" />
-        
+
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="AungHtetPaing Portfolio" />

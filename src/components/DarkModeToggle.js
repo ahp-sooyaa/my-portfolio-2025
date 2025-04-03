@@ -26,7 +26,7 @@ const DarkModeToggle = () => {
 
         localStorage.setItem("darkMode", darkMode);
         document.documentElement.classList.toggle("dark", darkMode);
-    }, [darkMode]);
+    }, [darkMode, isBrowser, isUserToggled]);
 
     return (
         <div className="ml-auto flex items-center dark:text-muted-dark text-muted-light text-sm">
