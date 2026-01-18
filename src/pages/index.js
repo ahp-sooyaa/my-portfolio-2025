@@ -1,5 +1,8 @@
 import React, {useState} from "react"
 import DarkModeToggle from "../components/DarkModeToggle"
+import WeatherToggle from "../components/WeatherToggle"
+import WeatherAnimation from "../components/WeatherAnimation"
+import WeatherContext from "../components/WeatherContext"
 import signature from "../images/signature.png"
 import signatureDark from "../images/signature-dark.png"
 import profile from "../images/profile.jpg"
@@ -14,7 +17,9 @@ const IndexPage = () => {
 
     return (
         <>
-            <nav className="section-container flex justify-end mt-8 md:mt-16">
+            <WeatherAnimation />
+            <nav className="section-container flex justify-end items-center gap-6 mt-8 md:mt-16">
+                <WeatherToggle />
                 <DarkModeToggle />
             </nav>
             <section className="mt-20 md:mt-48 mb-36">
@@ -223,6 +228,7 @@ const IndexPage = () => {
                     <img src={signature} alt="signature" className="block dark:hidden mx-auto w-28 h-12" />
                     <img src={signatureDark} alt="signature dark" className="hidden dark:block mx-auto w-28 h-12" />
                     <p className="text-sm font-normal dark:text-muted-dark text-muted-light">© 2025 AungHtetPaing. All rights reserved.</p>
+                    <WeatherContext />
                 </div>
             </footer>
         </>
