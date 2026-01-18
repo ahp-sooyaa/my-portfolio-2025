@@ -7,7 +7,9 @@ import {
     fetchWeatherData,
     getAnimationType,
     getCachedWeather,
-    setCachedWeather
+    setCachedWeather,
+    getGeolocationPermission,
+    setGeolocationPermission
 } from '../utils/weatherUtils';
 
 const WeatherAnimation = () => {
@@ -39,6 +41,15 @@ const WeatherAnimation = () => {
 
         const initWeather = async () => {
             try {
+                // Check permission state first
+                const permissionState = getGeolocationPermission();
+
+                // If previously denied, don't request again - just use default animation
+                if (permissionState === 'denied') {
+                    console.log('Geolocation was previously denied. Using default animation.');
+                    return;
+                }
+
                 // Check cache first
                 const cachedWeather = getCachedWeather();
                 if (cachedWeather) {
@@ -47,23 +58,38 @@ const WeatherAnimation = () => {
                     return;
                 }
 
-                // Get user location
-                const location = await getUserLocation();
+                // Only request geolocation if not denied before
+                try {
+                    // Get user location
+                    const location = await getUserLocation();
 
-                // Fetch weather data
-                const apiKey = process.env.GATSBY_WEATHER_API_KEY;
-                const weatherData = await fetchWeatherData(
-                    apiKey,
-                    location.latitude,
-                    location.longitude
-                );
+                    // Mark permission as granted
+                    setGeolocationPermission('granted');
 
-                // Cache the weather data
-                setCachedWeather(weatherData);
+                    // Fetch weather data
+                    const apiKey = process.env.GATSBY_WEATHER_API_KEY;
+                    const weatherData = await fetchWeatherData(
+                        apiKey,
+                        location.latitude,
+                        location.longitude
+                    );
 
-                // Determine animation type
-                const type = getAnimationType(weatherData.condition, weatherData.isDay);
-                setAnimationType(type);
+                    // Cache the weather data
+                    setCachedWeather(weatherData);
+
+                    // Determine animation type
+                    const type = getAnimationType(weatherData.condition, weatherData.isDay);
+                    setAnimationType(type);
+                } catch (locationError) {
+                    // Check if it was permission denied
+                    if (locationError.code === 1) { // PERMISSION_DENIED
+                        console.log('Geolocation permission denied by user.');
+                        setGeolocationPermission('denied');
+                    } else {
+                        console.log('Error getting location:', locationError.message);
+                    }
+                    // Use default animation (clear sky)
+                }
 
             } catch (error) {
                 console.log('Using default animation due to:', error.message);

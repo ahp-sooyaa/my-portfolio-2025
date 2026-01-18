@@ -48,4 +48,3 @@ const WeatherToggle = () => {
 };
 
 export default WeatherToggle;
-

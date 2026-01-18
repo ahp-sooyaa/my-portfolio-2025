@@ -83,10 +83,10 @@ Test in multiple browsers:
 ## ✅ Edge Cases & Error Handling
 
 ### Test Error Scenarios
-- [ ] **No internet**: Offline → Should show default cloud animation
-- [ ] **Invalid API key**: Temporarily change key → Should show default
-- [ ] **API timeout**: Network throttling → Should show default
-- [ ] **Geolocation denied**: Block permission → Should show default
+- [ ] **No internet**: Offline → Should show default clear sky animation
+- [ ] **Invalid API key**: Temporarily change key → Should show default clear sky
+- [ ] **API timeout**: Network throttling → Should show default clear sky
+- [ ] **Geolocation denied**: Block permission → Should show default clear sky, no footer
 
 ### Test Cache Scenarios
 - [ ] Visit page → Check cache in localStorage
@@ -218,4 +218,3 @@ localStorage.getItem('weatherData')
 ---
 
 **Happy Testing! 🎉**
-

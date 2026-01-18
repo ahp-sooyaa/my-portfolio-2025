@@ -3,10 +3,16 @@ import { getCachedWeather, getAnimationType } from '../utils/weatherUtils';
 
 const WeatherContext = () => {
     const [weatherMessage, setWeatherMessage] = useState('');
+    const [mounted, setMounted] = useState(false);
     const isBrowser = typeof window !== 'undefined';
 
+    // Prevent hydration mismatch - only render after mount
     useEffect(() => {
-        if (!isBrowser) return;
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isBrowser || !mounted) return;
 
         const updateWeatherMessage = () => {
             const cachedWeather = getCachedWeather();
@@ -20,7 +26,7 @@ const WeatherContext = () => {
             const animationType = getAnimationType(condition, isDay);
 
             // Generate context-aware messages based on weather type
-            let message = '';
+            let message;
 
             switch (animationType) {
                 case 'snow':
@@ -68,13 +74,44 @@ const WeatherContext = () => {
         // Update immediately
         updateWeatherMessage();
 
-        // Update every 5 minutes to check for changes
-        const interval = setInterval(updateWeatherMessage, 5 * 60 * 1000);
+        // Listen for localStorage changes (when weather data is cached)
+        const handleStorageChange = (e) => {
+            if (e.key === 'weatherData' || e.key === null) {
+                // Weather data was updated or storage was cleared
+                updateWeatherMessage();
+            }
+        };
 
-        return () => clearInterval(interval);
-    }, [isBrowser]);
+        // Listen for storage events from other tabs/windows
+        window.addEventListener('storage', handleStorageChange);
 
-    if (!weatherMessage) return null;
+        // Also listen for custom event for same-tab updates
+        const handleWeatherUpdate = () => {
+            updateWeatherMessage();
+        };
+        window.addEventListener('weatherDataUpdated', handleWeatherUpdate);
+
+        // Update every 5 seconds initially to catch new data quickly
+        const quickInterval = setInterval(updateWeatherMessage, 5 * 1000);
+
+        // After 30 seconds, switch to checking every 5 minutes
+        const slowCheckTimeout = setTimeout(() => {
+            clearInterval(quickInterval);
+            const slowInterval = setInterval(updateWeatherMessage, 5 * 60 * 1000);
+
+            return () => clearInterval(slowInterval);
+        }, 30 * 1000);
+
+        return () => {
+            clearInterval(quickInterval);
+            clearTimeout(slowCheckTimeout);
+            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('weatherDataUpdated', handleWeatherUpdate);
+        };
+    }, [isBrowser, mounted]);
+
+    // Don't render on server or before mount to prevent hydration mismatch
+    if (!mounted || !weatherMessage) return null;
 
     return (
         <p className="text-xs font-normal dark:text-muted-dark text-muted-light mt-2 opacity-75">

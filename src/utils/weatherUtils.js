@@ -72,7 +72,39 @@ export const getUserLocation = () => {
 
 // Cache management
 const CACHE_KEY = 'weatherData';
+const PERMISSION_KEY = 'geolocationPermission'; // Track permission state
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+
+// Permission state management
+export const getGeolocationPermission = () => {
+    if (typeof window === 'undefined') return null;
+
+    try {
+        return localStorage.getItem(PERMISSION_KEY);
+    } catch (error) {
+        return null;
+    }
+};
+
+export const setGeolocationPermission = (state) => {
+    if (typeof window === 'undefined') return;
+
+    try {
+        localStorage.setItem(PERMISSION_KEY, state);
+    } catch (error) {
+        console.error('Error saving permission state:', error);
+    }
+};
+
+export const clearGeolocationPermission = () => {
+    if (typeof window === 'undefined') return;
+
+    try {
+        localStorage.removeItem(PERMISSION_KEY);
+    } catch (error) {
+        console.error('Error clearing permission state:', error);
+    }
+};
 
 export const getCachedWeather = () => {
     if (typeof window === 'undefined') return null;
@@ -104,8 +136,10 @@ export const setCachedWeather = (data) => {
             data,
             timestamp: Date.now()
         }));
+
+        // Dispatch custom event to notify components that weather data was updated
+        window.dispatchEvent(new CustomEvent('weatherDataUpdated', { detail: data }));
     } catch (error) {
         console.error('Error caching weather:', error);
     }
 };
-
