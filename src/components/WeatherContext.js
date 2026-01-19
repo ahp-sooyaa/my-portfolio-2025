@@ -4,7 +4,6 @@ import { getCachedWeather, getAnimationType } from '../utils/weatherUtils';
 const WeatherContext = () => {
     const [weatherMessage, setWeatherMessage] = useState('');
     const [mounted, setMounted] = useState(false);
-    const isBrowser = typeof window !== 'undefined';
 
     // Prevent hydration mismatch - only render after mount
     useEffect(() => {
@@ -12,7 +11,7 @@ const WeatherContext = () => {
     }, []);
 
     useEffect(() => {
-        if (!isBrowser || !mounted) return;
+        if (!mounted) return;
 
         const updateWeatherMessage = () => {
             const cachedWeather = getCachedWeather();
@@ -94,21 +93,25 @@ const WeatherContext = () => {
         // Update every 5 seconds initially to catch new data quickly
         const quickInterval = setInterval(updateWeatherMessage, 5 * 1000);
 
+        // Variable to hold the slow interval reference
+        let slowInterval = null;
+
         // After 30 seconds, switch to checking every 5 minutes
         const slowCheckTimeout = setTimeout(() => {
             clearInterval(quickInterval);
-            const slowInterval = setInterval(updateWeatherMessage, 5 * 60 * 1000);
-
-            return () => clearInterval(slowInterval);
+            slowInterval = setInterval(updateWeatherMessage, 5 * 60 * 1000);
         }, 30 * 1000);
 
         return () => {
             clearInterval(quickInterval);
             clearTimeout(slowCheckTimeout);
+            if (slowInterval) {
+                clearInterval(slowInterval);
+            }
             window.removeEventListener('storage', handleStorageChange);
             window.removeEventListener('weatherDataUpdated', handleWeatherUpdate);
         };
-    }, [isBrowser, mounted]);
+    }, [mounted]);
 
     // Don't render on server or before mount to prevent hydration mismatch
     if (!mounted || !weatherMessage) return null;

@@ -16,12 +16,17 @@ const WeatherAnimation = () => {
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
     const animationFrameRef = useRef(null);
+    const [mounted, setMounted] = useState(false);
     const [isEnabled, setIsEnabled] = useState(true);
     const [animationType, setAnimationType] = useState('clear'); // Changed default to clear - no flashing
-    const isBrowser = typeof window !== 'undefined';
+
+    // Only set mounted after component mounts on client
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
-        if (!isBrowser) return;
+        if (!mounted) return;
 
         // Check user preference
         const savedPreference = localStorage.getItem('weatherAnimationEnabled');
@@ -34,10 +39,10 @@ const WeatherAnimation = () => {
         if (prefersReducedMotion) {
             setIsEnabled(false);
         }
-    }, [isBrowser]);
+    }, [mounted]);
 
     useEffect(() => {
-        if (!isBrowser || !isEnabled) return;
+        if (!mounted || !isEnabled) return;
 
         const initWeather = async () => {
             try {
@@ -98,10 +103,10 @@ const WeatherAnimation = () => {
         };
 
         initWeather();
-    }, [isBrowser, isEnabled]);
+    }, [mounted, isEnabled]);
 
     useEffect(() => {
-        if (!isBrowser || !isEnabled) return;
+        if (!mounted || !isEnabled) return;
 
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -149,9 +154,9 @@ const WeatherAnimation = () => {
             }
             window.removeEventListener('resize', handleResize);
         };
-    }, [isBrowser, isEnabled, animationType]);
+    }, [mounted, isEnabled, animationType]);
 
-    if (!isBrowser || !isEnabled) return null;
+    if (!mounted || !isEnabled) return null;
 
     return (
         <canvas

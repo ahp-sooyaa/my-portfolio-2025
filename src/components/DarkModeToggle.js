@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 const DarkModeToggle = () => {
-    const isBrowser = typeof window !== "undefined";
+    const [mounted, setMounted] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
     const [isUserToggled, setIsUserToggled] = useState(false);
 
+    // Only set mounted after component mounts on client
     useEffect(() => {
-        if (!isBrowser) return;
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
 
         const savedMode = localStorage.getItem("darkMode");
         const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -14,7 +19,7 @@ const DarkModeToggle = () => {
 
         setDarkMode(initialMode);
         document.documentElement.classList.toggle("dark", initialMode);
-    }, []);
+    }, [mounted]);
 
     const toggleDarkMode = () => {
         setDarkMode(prevMode => !prevMode);
@@ -22,11 +27,24 @@ const DarkModeToggle = () => {
     };
 
     useEffect(() => {
-        if (!isBrowser || !isUserToggled) return;
+        if (!mounted || !isUserToggled) return;
 
         localStorage.setItem("darkMode", darkMode);
         document.documentElement.classList.toggle("dark", darkMode);
-    }, [darkMode]);
+    }, [darkMode, mounted, isUserToggled]);
+
+    // Render a placeholder during SSR to prevent hydration mismatch
+    if (!mounted) {
+        return (
+            <div className="ml-auto flex items-center dark:text-muted-dark text-muted-light text-sm">
+                Dark mode
+                <span className="dark:shadow-none dark:bg-subtle-gray-dark shadow-[0_0_5px_0px_rgba(0,0,0,0.25)] rounded-xl ml-2 w-14 h-6 flex items-center justify-center dark:text-title-dark text-title-light">
+                    off
+                    <span className="animate-pulse w-2 h-2 rounded-full ml-1.5 bg-red-500"></span>
+                </span>
+            </div>
+        );
+    }
 
     return (
         <div className="ml-auto flex items-center dark:text-muted-dark text-muted-light text-sm">
